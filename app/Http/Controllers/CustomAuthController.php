@@ -58,6 +58,42 @@ class CustomAuthController extends Controller
         return redirect("dashboard")->withSuccess('have signed-in');
     }
 
+    public function penumpang()
+    {
+        return view('auth.registration');
+    }
+
+
+    public function customPenumpang(Request $request)
+    {
+        $request->validate([
+            'nama_penumpang' => 'required',
+            'alamat' => 'required',
+            'tanggal_lahir' => 'required',
+            'jenis_kelamin' => 'required',
+            'telepon' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        $data = $request->all();
+        $check = $this->createPenumpang($data);
+
+        return redirect("login")->withSuccess('have signed-in');
+    }
+
+    public function createPenumpang(array $data)
+    {
+        return Penumpang::create([
+            'nama_penumpang' => $data['nama_penumpang'],
+            'alamat' => $data['alamat'],
+            'tanggal_lahir' => $data['tanggal_lahir'],
+            'jenis_kelamin' => $data['jenis_kelamin'],
+            'telepon' => $data['telepon'],
+            'username' => $data['username'],
+            'password' => Hash::make($data['password']),
+        ]);
+    }
 
     public function create(array $data)
     {
